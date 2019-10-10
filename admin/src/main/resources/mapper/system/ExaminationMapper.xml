@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etycx.system.mapper.ExaminationMapper">
+    
+    <resultMap type="Examination" id="ExaminationResult">
+        <result property="id"    column="id"    />
+        <result property="examinationType"    column="examination_type"    />
+        <result property="examinationContent"    column="examination_content"    />
+        <result property="examinationOption"    column="examination_option"    />
+        <result property="examinationRight"    column="examination_right"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectExaminationVo">
+        select id, examination_type, examination_content, examination_option, examination_right, create_time from examination
+    </sql>
+	
+    <select id="selectExaminationList" parameterType="Examination" resultMap="ExaminationResult">
+        <include refid="selectExaminationVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="examinationType != null "> and examination_type = #{examinationType}</if>
+             <if test="examinationContent != null  and examinationContent != '' "> and examination_content = #{examinationContent}</if>
+             <if test="examinationOption != null  and examinationOption != '' "> and examination_option = #{examinationOption}</if>
+             <if test="examinationRight != null  and examinationRight != '' "> and examination_right = #{examinationRight}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectExaminationById" parameterType="Integer" resultMap="ExaminationResult">
+        <include refid="selectExaminationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertExamination" parameterType="Examination" useGeneratedKeys="true" keyProperty="id">
+        insert into examination
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="examinationType != null  ">examination_type,</if>
+			<if test="examinationContent != null  and examinationContent != ''  ">examination_content,</if>
+			<if test="examinationOption != null  and examinationOption != ''  ">examination_option,</if>
+			<if test="examinationRight != null  and examinationRight != ''  ">examination_right,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="examinationType != null  ">#{examinationType},</if>
+			<if test="examinationContent != null  and examinationContent != ''  ">#{examinationContent},</if>
+			<if test="examinationOption != null  and examinationOption != ''  ">#{examinationOption},</if>
+			<if test="examinationRight != null  and examinationRight != ''  ">#{examinationRight},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateExamination" parameterType="Examination">
+        update examination
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examinationType != null  ">examination_type = #{examinationType},</if>
+            <if test="examinationContent != null  and examinationContent != ''  ">examination_content = #{examinationContent},</if>
+            <if test="examinationOption != null  and examinationOption != ''  ">examination_option = #{examinationOption},</if>
+            <if test="examinationRight != null  and examinationRight != ''  ">examination_right = #{examinationRight},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteExaminationById" parameterType="Integer">
+        delete from examination where id = #{id}
+    </delete>
+	
+    <delete id="deleteExaminationByIds" parameterType="String">
+        delete from examination where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
