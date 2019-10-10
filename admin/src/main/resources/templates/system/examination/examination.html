@@ -8,34 +8,7 @@
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
 				<form id="formId">
-					<div class="select-list">
-						<ul>
-							<li>
-								试题类型 0 填空 1 选择：<input type="text" name="examinationType"/>
-							</li>
 
-							<li>
-								试题内容：<input type="text" name="examinationContent"/>
-							</li>
-
-							<li>
-								试题选项：<input type="text" name="examinationOption"/>
-							</li>
-
-							<li>
-								试题答案：<input type="text" name="examinationRight"/>
-							</li>
-
-							<li>
-								录入时间：<input type="text" name="createTime"/>
-							</li>
-
-							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-							</li>
-						</ul>
-					</div>
 				</form>
 			</div>
 			
@@ -49,9 +22,6 @@
 				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:examination:remove">
 					<i class="fa fa-remove"></i> 删除
 				</a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:examination:export">
-						<i class="fa fa-download"></i> 导出
-				 </a>
 			</div>
 			<div class="col-sm-12 select-table table-striped">
 				<table id="bootstrap-table" data-mobile-responsive="true"></table>
@@ -82,23 +52,8 @@
 					visible: false
 				},
 				{
-					field : 'examinationType', 
-					title : '试题类型 0 填空 1 选择',
-					sortable: true
-				},
-				{
 					field : 'examinationContent', 
 					title : '试题内容',
-					sortable: true
-				},
-				{
-					field : 'examinationOption', 
-					title : '试题选项',
-					sortable: true
-				},
-				{
-					field : 'examinationRight', 
-					title : '试题答案',
 					sortable: true
 				},
 				{
