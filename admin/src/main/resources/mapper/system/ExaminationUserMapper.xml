@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etycx.system.mapper.ExaminationUserMapper">
+    
+    <resultMap type="ExaminationUser" id="ExaminationUserResult">
+        <result property="id"    column="id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="branchName"    column="branch_name"    />
+        <result property="score"    column="score"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+	
+	<sql id="selectExaminationUserVo">
+        select id, user_name, branch_name, score, create_time from examination_user
+    </sql>
+	
+    <select id="selectExaminationUserList" parameterType="ExaminationUser" resultMap="ExaminationUserResult">
+        <include refid="selectExaminationUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="userName != null  and userName != '' "> and user_name = #{userName}</if>
+             <if test="branchName != null  and branchName != '' "> and branch_name = #{branchName}</if>
+             <if test="score != null "> and score = #{score}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectExaminationUserById" parameterType="Integer" resultMap="ExaminationUserResult">
+        <include refid="selectExaminationUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertExaminationUser" parameterType="ExaminationUser" useGeneratedKeys="true" keyProperty="id">
+        insert into examination_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userName != null  and userName != ''  ">user_name,</if>
+			<if test="branchName != null  and branchName != ''  ">branch_name,</if>
+			<if test="score != null  ">score,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userName != null  and userName != ''  ">#{userName},</if>
+			<if test="branchName != null  and branchName != ''  ">#{branchName},</if>
+			<if test="score != null  ">#{score},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateExaminationUser" parameterType="ExaminationUser">
+        update examination_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null  and userName != ''  ">user_name = #{userName},</if>
+            <if test="branchName != null  and branchName != ''  ">branch_name = #{branchName},</if>
+            <if test="score != null  ">score = #{score},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <update id="cleanSore">
+        UPDATE `examination_user` SET `score`=0
+    </update>
+
+	<delete id="deleteExaminationUserById" parameterType="Integer">
+        delete from examination_user where id = #{id}
+    </delete>
+	
+    <delete id="deleteExaminationUserByIds" parameterType="String">
+        delete from examination_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="questions" resultType="map">
+       select id questionId,examination_type examinationType,examination_content examinationContent,examination_option examinationOption from examination
+   </select>
+
+    <select id="branchNames" resultType="map">
+        select branch_name branchName from branch_names
+    </select>
+
+
+    <select id="questionsAnswer" resultType="map">
+       select id questionId,examination_type examinationType,examination_right examinationRight from examination
+   </select>
+
+    <insert id="insertUserAnswerRecord"  parameterType="list">
+        insert into examination_record (user_id,question_id,user_answer)
+        values
+        <foreach collection="list" item="examinationRecord" index="index" separator=",">
+            (
+            #{examinationRecord.userId},
+            #{examinationRecord.questionId},
+            #{examinationRecord.userAnswer}
+            )
+        </foreach>
+
+    </insert>
+    
+</mapper>

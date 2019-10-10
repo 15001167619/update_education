@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>web接口测试</title>
+  <script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="aes.js"></script>
+
+  <script type="text/javascript">
+
+    var timestamp;
+
+    function apiSign(){
+      var hash = md5("appKey=OiMWgmrILRfLK4IG#interfaceName=exampleAdd#timestamp=" + timestamp() + "#dataParams=" + dataParams());
+      console.log(hash)
+      return hash;
+    }
+
+
+    function dataParams(){
+      var params = 'userId=2&name=武海升&age=24';
+      var dataParams = params;
+      return dataParams;
+    }
+
+
+    function timestamp(){
+      timestamp = new Date().getTime();
+      return timestamp;
+    }
+
+    function testAES(){
+      var text = "您好";
+      console.log("加密之前:",text);
+      console.log("加密之后:",encrypt(text));
+      console.log("解密之后:",decrypt('n2w1k7k4+uT/HElZjO/6Pw=='));
+    }
+
+    /**
+     * 加密（需要先加载lib/aes/aes.min.js文件）
+     * @param word
+     * @returns {*}
+     */
+    function encrypt(word){
+      var key = CryptoJS.enc.Utf8.parse("nbNDSBFBbgfckvfl");
+      var srcs = CryptoJS.enc.Utf8.parse(word);
+      var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+      return encrypted.toString();
+    }
+
+    /**
+     * 解密
+     */
+    function decrypt(word){
+      debugger;
+      var key = CryptoJS.enc.Utf8.parse("nbNDSBFBbgfckvfl");
+      var decrypt = CryptoJS.AES.decrypt(word, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+      return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+    }
+
+
+
+    function AddTest() {
+      var comment = {};
+      comment.appKey = "OiMWgmrILRfLK4IG";
+      comment.interfaceName = "exampleAdd";
+      comment.dataParams = dataParams();
+      comment.apiSign = apiSign();
+      comment.timestamp = timestamp;
+
+      $.ajax({
+        url: 'http://localhost/api/exampleAdd',
+        data: JSON.stringify(comment),
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json;charset=utf-8',
+        cache: false,
+        success: function(data) {
+          //根据返回值data.d处理
+        },
+        error: function(xhr) {
+          //中间发生异常，具体查看xhr.responseText
+        }
+      });
+    }
+
+
+
+
+  </script>
+
+</head>
+<body>
+<button onclick="apiSign()">调用签名函数</button>
+<button onclick="AddTest()">测试接口</button>
+<button onclick="testAES()">testAES</button>
+
+</body>
+</html>
