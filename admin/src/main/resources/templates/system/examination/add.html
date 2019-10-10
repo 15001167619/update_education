@@ -25,7 +25,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">答案顺序</label>
 					<div class="col-sm-8">
-						<select name="sequence"   class="form-control m-b" th:with="type=${@dict.getType('sequence')}">
+						<select name="sequence" id="sequence-0" class="form-control m-b" th:with="type=${@dict.getType('sequence')}">
 							<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 						</select>
 					</div>
@@ -93,7 +93,7 @@
 			<div class="form-group" id="examinationOption">
 				<label class="col-sm-3 control-label">答案选项</label>
 				<div class="col-sm-8">
-					<select name="examinationOption" class="form-control m-b" th:with="type=${@dict.getType('examination_option')}">
+					<select name="examinationOption" id="examinationOption-1" class="form-control m-b" th:with="type=${@dict.getType('examination_option')}">
 						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 					</select>
 				</div>
@@ -103,7 +103,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">试题答案</label>
 					<div class="col-sm-8">
-						<textarea id="examinationRight" name="examinationRight" autocomplete="off" maxlength="500" class="form-control" rows="6" placeholder="大局意识#看齐意识"></textarea>
+						<textarea id="examinationRight-0" name="examinationRight" autocomplete="off" maxlength="500" class="form-control" rows="6" placeholder="大局意识#看齐意识"></textarea>
 					</div>
 				</div>
 
@@ -162,9 +162,74 @@
 		});
 		
 		function submitHandler() {
-	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/add", $('#form-examination-add').serialize());
-	        }
+			debugger;
+			//判断是选择题还是填空题
+			var examinationType = $('#examinationType').val()
+			if(examinationType == 0){
+				//填空题
+				var examinationContent = $('#examinationContent-0').val()
+				if(examinationContent == ""){
+					alert("请输入试题内容")
+					return
+				}
+				var examinationRight = $('#examinationRight-0').val()
+				if(examinationRight == ""){
+					alert("请输入试题答案")
+					return
+				}
+				var sequence = $('#sequence-0').val()
+				var examinationRight = sequence+"#"+examinationRight
+				var examinationInfo = {
+					examinationType:examinationType,
+					examinationContent:examinationContent,
+					examinationRight:examinationRight
+				};
+				console.log(examinationInfo)
+			}else {
+				//选择题
+				var examinationContent = $('#examinationContent-1').val()
+				var examinationRight = $('#examinationOption-1').val()
+				if(examinationContent == ""){
+					alert("请输入试题内容")
+					return
+				}
+				var a = $('#A').val()
+				if(a == ""){
+					alert("请输入答案选项")
+					return
+				}
+				var b = $('#B').val()
+				if(b == ""){
+					alert("请输入答案选项")
+					return
+				}
+				var c = $('#C').val()
+				if(c == ""){
+					alert("请输入答案选项")
+					return
+				}
+				var d = $('#D').val()
+				if(d == ""){
+					alert("请输入答案选项")
+					return
+				}
+				var examinationOption = {
+					A:a,
+					B:b,
+					C:c,
+					D:d
+				};
+				var examinationInfo = {
+					examinationType:examinationType,
+					examinationContent:examinationContent,
+					examinationOption:examinationOption,
+					examinationRight:examinationRight
+				};
+				console.log(examinationInfo)
+			}
+	        // if ($.validate.form()) {
+	        //     $.operate.save(prefix + "/add", $('#form-examination-add').serialize());
+	        // }
 	    }
 	</script>
 </body>
