@@ -38,20 +38,13 @@
 				</div>
 			</div>
 
-			<div class="form-group" id="examinationOption">
-				<label class="col-sm-3 control-label">答案选项</label>
-				<div class="col-sm-8">
-					<select name="examinationOption" class="form-control m-b" th:with="type=${@dict.getType('examination_option')}">
-						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-					</select>
-				</div>
-			</div>
+
 
 			<div id="examinationContent_0">
 				<div class="form-group">
 					<label class="col-sm-3 control-label">试题内容</label>
 					<div class="col-sm-8">
-						<textarea id="examinationContent" name="examinationContent" autocomplete="off" maxlength="500" class="form-control" rows="6" placeholder="“四个意识”是指牢固树立政治意识、content#4、核心意识、content#4，自觉在思想上政治上行动上同以习近平同志为核心的党中央保持高度一致。"></textarea>
+						<textarea id="examinationContent-0" name="examinationContent" autocomplete="off" maxlength="500" class="form-control" rows="6" placeholder="“四个意识”是指牢固树立政治意识、content#4、核心意识、content#4，自觉在思想上政治上行动上同以习近平同志为核心的党中央保持高度一致。"></textarea>
 					</div>
 				</div>
 				<div class="form-group">
@@ -60,6 +53,49 @@
 						<p class="form-control-static">	“四个意识”是指牢固树立政治意识、<span class="span-font">content#4</span>、核心意识、<span class="span-font">content#4</span>，自觉在思想上政治上行动上同以习近平同志为核心的党中央保持高度一致。</p>
 						<p class="form-control-static">【试题内容解析】<span class="span-font">其中 content 为试题正确答案内容，# 为连接符号，4 为答案所需的汉字数 </span> </p>
 					</div>
+				</div>
+			</div>
+
+			<div id="examinationContent_1">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">试题内容</label>
+					<div class="col-sm-8">
+						<textarea id="examinationContent-1" name="examinationContent" autocomplete="off" maxlength="500" class="form-control" rows="6" placeholder="党支部公示发展对象的基本情况、党员群众推荐情况、培养考察情况、反映问题方式及其他内容，时间一般为（）。"></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">A</label>
+					<div class="col-sm-8">
+						<textarea id="A" name="A" autocomplete="off" maxlength="500" class="form-control" rows="2" placeholder="7天"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">B</label>
+					<div class="col-sm-8">
+						<textarea id="B" name="B" autocomplete="off" maxlength="500" class="form-control" rows="2" placeholder="10天"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">C</label>
+					<div class="col-sm-8">
+						<textarea id="C" name="C" autocomplete="off" maxlength="500" class="form-control" rows="2" placeholder="5天"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">D</label>
+					<div class="col-sm-8">
+						<textarea id="D" name="D" autocomplete="off" maxlength="500" class="form-control" rows="2" placeholder="3天"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group" id="examinationOption">
+				<label class="col-sm-3 control-label">答案选项</label>
+				<div class="col-sm-8">
+					<select name="examinationOption" class="form-control m-b" th:with="type=${@dict.getType('examination_option')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>
 				</div>
 			</div>
 
@@ -91,6 +127,7 @@
 			if(examinationType == 0){
 				//填空题
 				$('#examinationOption').hide()
+				$('#examinationContent_1').hide()
 			}
 		});
 
@@ -99,12 +136,14 @@
 			if(examinationType == 0){
 				//填空题
 				$('#examinationOption').hide()
+				$('#examinationContent_1').hide()
 				$('#sequence').show()
 				$('#examinationContent_0').show()
 				$('#examinationRight_0').show()
 			}else {
 				//选择题
 				$('#examinationOption').show()
+				$('#examinationContent_1').show()
 				$('#sequence').hide()
 				$('#examinationContent_0').hide()
 				$('#examinationRight_0').hide()
